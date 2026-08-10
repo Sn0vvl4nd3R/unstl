@@ -1,7 +1,7 @@
-#ifndef ARENA_ALLOCATOR_HPP
-#define ARENA_ALLOCATOR_HPP
+#pragma once
 
 #include "contracts.hpp"
+#include "allocator.hpp"
 #include <cstdint>
 #include <cstddef>
 
@@ -30,10 +30,7 @@ namespace unstl {
         UNSTL_EXPECT(alignment != 0 && (alignment & (alignment - 1)) == 0, "Alignment must be a power of 2");
         std::byte* current = buffer_ + offset_;
         std::uintptr_t current_addr = reinterpret_cast<std::uintptr_t>(current);
-
-        std::uintptr_t remainder = current_addr & (alignment - 1);
-        std::size_t padding = (alignment - remainder) & (alignment - 1);
-
+        std::size_t padding = (-current_addr) & (alignment - 1);
         std::size_t remaining = capacity_ - offset_;
         UNSTL_EXPECT(
           padding <= remaining &&
@@ -56,10 +53,7 @@ namespace unstl {
         UNSTL_EXPECT(alignment != 0 && (alignment & (alignment - 1)) == 0, "Alignment must be a power of 2");
         std::byte* current = buffer_ + offset_;
         std::uintptr_t current_addr = reinterpret_cast<std::uintptr_t>(current);
-
-        std::uintptr_t remainder = current_addr & (alignment - 1);
-        std::size_t padding = (alignment - remainder) & (alignment - 1);
-
+        std::size_t padding = (-current_addr) & (alignment - 1);
         std::size_t remaining = capacity_ - offset_;
         if ((padding > remaining) || (bytes > remaining - padding)) {
           return nullptr;
@@ -103,6 +97,7 @@ namespace unstl {
         return capacity_;
       }
   };
-}
 
-#endif
+  static_assert(unstl::allocator<arena_allocator>,
+      "arena_allocator does not satisfy the unstl::allocator concept!");
+}

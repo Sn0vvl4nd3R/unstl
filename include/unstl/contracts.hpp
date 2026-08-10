@@ -1,5 +1,4 @@
-#ifndef UNSTL_CONTRACTS_HPP
-#define UNSTL_CONTRACTS_HPP
+#pragma once
 
 #ifndef NDEBUG
 
@@ -18,7 +17,5 @@
             __builtin_unreachable();     \
         }                                \
     } while (false)
-
-#endif
 
 #endif
