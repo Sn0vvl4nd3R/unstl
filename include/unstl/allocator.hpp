@@ -6,17 +6,17 @@
 namespace unstl {
 
   template <typename A>
-  concept allocator =
+  concept Allocator =
     requires(
       A& alloc,
       void* ptr,
       std::size_t bytes,
       std::size_t alignment
     ) {
-      { alloc.allocate(bytes, alignment) } -> std::same_as<void*>;
+      { alloc.Allocate(bytes, alignment) } -> std::same_as<void*>;
 
       {
-        alloc.deallocate(ptr, bytes, alignment)
+        alloc.Deallocate(ptr, bytes, alignment)
       } noexcept;
     };
 

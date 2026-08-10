@@ -6,21 +6,21 @@
 
 namespace unstl {
 
-  class heap_allocator {
+  class HeapAllocator {
     public:
       [[nodiscard]]
-      void* allocate(
+      void* Allocate(
         std::size_t bytes,
         std::size_t alignment = alignof(std::max_align_t)
       ) noexcept {
         UNSTL_EXPECT(alignment != 0 && (alignment & (alignment - 1)) == 0, "Alignment must be a power of 2");
-        void* ptr = try_allocate(bytes, alignment);
+        void* ptr = TryAllocate(bytes, alignment);
         UNSTL_EXPECT(ptr != nullptr, "Failed to allocate memory");
         return ptr;
       }
 
       [[nodiscard]]
-      void* try_allocate(
+      void* TryAllocate(
         std::size_t bytes,
         std::size_t alignment = alignof(std::max_align_t)
       ) noexcept {
@@ -29,7 +29,7 @@ namespace unstl {
         return std::aligned_alloc(alignment, bytes);
       }
 
-      void deallocate(
+      void Deallocate(
         void* ptr,
         std::size_t bytes,
         std::size_t alignment
@@ -38,6 +38,6 @@ namespace unstl {
       }
   };
 
-  static_assert(unstl::allocator<heap_allocator>,
-      "heap_allocator does not satisfy the unstl::allocator concept!");
+  static_assert(unstl::Allocator<HeapAllocator>,
+      "HeapAllocator does not satisfy the unstl::Allocator concept!");
 }

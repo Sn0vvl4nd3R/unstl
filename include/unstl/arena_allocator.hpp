@@ -7,23 +7,23 @@
 
 namespace unstl {
 
-  class arena_allocator {
+  class ArenaAllocator {
     private:
       std::byte* buffer_;
       std::size_t capacity_;
       std::size_t offset_;
 
     public:
-      arena_allocator(std::byte* memory, std::size_t bytes)
+      ArenaAllocator(std::byte* memory, std::size_t bytes)
         : buffer_(memory), capacity_(bytes), offset_(0) {
           UNSTL_EXPECT(memory != nullptr || bytes == 0, "Invalid buffer");
       }
 
-      arena_allocator(const arena_allocator&) = delete;
-      arena_allocator& operator=(const arena_allocator&) = delete;
+      ArenaAllocator(const ArenaAllocator&) = delete;
+      ArenaAllocator& operator=(const ArenaAllocator&) = delete;
 
       [[nodiscard]]
-      void* allocate(
+      void* Allocate(
         std::size_t bytes,
         std::size_t alignment = alignof(std::max_align_t)
       ) noexcept {
@@ -46,7 +46,7 @@ namespace unstl {
       }
 
       [[nodiscard]]
-      void* try_allocate(
+      void* TryAllocate(
         std::size_t bytes,
         std::size_t alignment = alignof(std::max_align_t)
       ) noexcept {
@@ -66,38 +66,38 @@ namespace unstl {
         return result;
       }
 
-      void deallocate(
+      void Deallocate(
         void* ptr,
         std::size_t bytes,
         std::size_t alignment
       ) noexcept {}
 
-      void reset(void) noexcept {
+      void Reset(void) noexcept {
         offset_ = 0;
       }
 
       using marker = std::size_t;
 
-      [[nodiscard]] marker mark(void) const noexcept {
+      [[nodiscard]] marker Mark(void) const noexcept {
         return offset_;
       }
-      void rewind(marker m) noexcept {
+      void Rewind(marker m) noexcept {
         UNSTL_EXPECT(m <= offset_, "Marker must not exceed current offset");
         offset_ = m;
       }
 
-      [[nodiscard]] std::size_t remaining(void) const noexcept {
+      [[nodiscard]] std::size_t Remaining(void) const noexcept {
         return capacity_ - offset_;
       }
 
-      [[nodiscard]] std::size_t used(void) const noexcept {
+      [[nodiscard]] std::size_t Used(void) const noexcept {
         return offset_;
       }
-      [[nodiscard]] std::size_t capacity(void) const noexcept {
+      [[nodiscard]] std::size_t Capacity(void) const noexcept {
         return capacity_;
       }
   };
 
-  static_assert(unstl::allocator<arena_allocator>,
-      "arena_allocator does not satisfy the unstl::allocator concept!");
+  static_assert(unstl::Allocator<ArenaAllocator>,
+      "ArenaAllocator does not satisfy the unstl::Allocator concept!");
 }
