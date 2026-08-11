@@ -68,5 +68,5 @@ namespace unstl {
   };
 
   static_assert(unstl::Allocator<StackAllocator>,
-      "StackAllocator does not satisfy the unstl::Allocator concept!");
+    "StackAllocator does not satisfy the unstl::Allocator concept!");
 }

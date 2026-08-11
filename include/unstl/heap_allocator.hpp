@@ -39,5 +39,5 @@ namespace unstl {
   };
 
   static_assert(unstl::Allocator<HeapAllocator>,
-      "HeapAllocator does not satisfy the unstl::Allocator concept!");
+    "HeapAllocator does not satisfy the unstl::Allocator concept!");
 }

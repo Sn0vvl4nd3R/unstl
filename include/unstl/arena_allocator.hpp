@@ -73,5 +73,5 @@ namespace unstl {
   };
 
   static_assert(unstl::Allocator<ArenaAllocator>,
-      "ArenaAllocator does not satisfy the unstl::Allocator concept!");
+    "ArenaAllocator does not satisfy the unstl::Allocator concept!");
 }

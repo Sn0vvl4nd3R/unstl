@@ -13,7 +13,9 @@ namespace unstl {
       std::size_t bytes,
       std::size_t alignment
     ) {
-      { alloc.Allocate(bytes, alignment) } -> std::same_as<void*>;
+      {
+        alloc.Allocate(bytes, alignment)
+      } noexcept -> std::same_as<void*>;
 
       {
         alloc.Deallocate(ptr, bytes, alignment)
