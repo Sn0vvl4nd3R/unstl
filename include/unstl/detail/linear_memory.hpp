@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UNSTL_LINEAR_MEMORY
+#define UNSTL_LINEAR_MEMORY
 
 #include "../contracts.hpp"
 #include <cstdint>
@@ -55,3 +56,5 @@ namespace unstl {
 
   }
 }
+
+#endif

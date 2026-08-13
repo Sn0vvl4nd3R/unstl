@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UNSTL_HEAP_ALLOCATOR
+#define UNSTL_HEAP_ALLOCATOR
 
 #include "contracts.hpp"
 #include "allocator.hpp"
@@ -41,3 +42,5 @@ namespace unstl {
   static_assert(unstl::Allocator<HeapAllocator>,
     "HeapAllocator does not satisfy the unstl::Allocator concept!");
 }
+
+#endif

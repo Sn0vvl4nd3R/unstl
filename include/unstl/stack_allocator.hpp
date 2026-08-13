@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UNSTL_STACK_ALLOCATOR
+#define UNSTL_STACK_ALLOCATOR
 
 #include "contracts.hpp"
 #include "allocator.hpp"
@@ -70,3 +71,5 @@ namespace unstl {
   static_assert(unstl::Allocator<StackAllocator>,
     "StackAllocator does not satisfy the unstl::Allocator concept!");
 }
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UNSTL_POOL_ALLOCATOR
+#define UNSTL_POOL_ALLOCATOR
 
 #include "contracts.hpp"
 #include "allocator.hpp"
@@ -39,3 +40,5 @@ namespace unstl {
   static_assert(unstl::Allocator<PoolAllocator>,
     "PoolAllocator does not satisfy the unstl::Allocator concept!");
 }
+
+#endif

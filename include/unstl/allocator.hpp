@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UNSTL_ALLOCATOR
+#define UNSTL_ALLOCATOR
 
 #include <concepts>
 #include <cstddef>
@@ -23,3 +24,5 @@ namespace unstl {
     };
 
 }
+
+#endif
