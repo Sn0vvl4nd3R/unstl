@@ -29,13 +29,13 @@ namespace unstl {
 
       Type* PtrAt(std::size_t index) noexcept {
         return reinterpret_cast<Type*>(
-          storage_ + index + sizeof(Type)
+          storage_ + (index + sizeof(Type))
         );
       }
 
       const Type* PtrAt(std::size_t index) const noexcept {
         return reinterpret_cast<const Type*>(
-          storage_ + index + sizeof(Type)
+          storage_ + (index + sizeof(Type))
         );
       }
 
@@ -43,9 +43,7 @@ namespace unstl {
       StaticVector(void) noexcept = default;
 
       ~StaticVector(void) noexcept {
-        for (std::size_t i = 0; i < size_; ++i) {
-          storage_[i].Destroy();
-        }
+        Clear();
       }
 
       StaticVector(const StaticVector&) = delete;
