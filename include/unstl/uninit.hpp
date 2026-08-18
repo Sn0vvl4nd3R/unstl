@@ -4,6 +4,7 @@
 #include "contracts.hpp"
 #include <cstddef>
 #include <utility>
+#include <new>
 
 namespace unstl {
 
@@ -39,12 +40,14 @@ namespace unstl {
         UNSTL_EXPECT(!is_constructed_, "Double construct!");
         is_constructed_ = true;
         #endif
-        return ::new(Ptr()) Type(std::forward<Args>(args)...);
+
+        Type* ptr = ::new(Ptr()) Type(std::forward<Args>(args)...);
+        return ptr;
       }
 
       void Destroy(void) noexcept {
         #ifndef NDEBUG
-        UNSTL_EXPECT(!is_constructed_, "Destroying unconstructed object!");
+        UNSTL_EXPECT(is_constructed_, "Destroying unconstructed object!");
         is_constructed_ = false;
         #endif
         Ptr()->~Type();
