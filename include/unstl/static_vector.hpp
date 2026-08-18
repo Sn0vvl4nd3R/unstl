@@ -2,15 +2,15 @@
 #define UNSTL_STATIC_VECTOR
 
 #include "contracts.hpp"
-#include "uninit.hpp"
+#include <utility>
 #include <cstddef>
+#include <type_traits>
 
 namespace unstl {
 
   template <typename Type, std::size_t Capacity>
   class StaticVector {
     private:
-      // Uninit<Type> storage_[Capacity];
       alignas(Type) std::byte storage_[sizeof(Type) * Capacity];
       std::size_t size_ = 0;
 
@@ -29,13 +29,13 @@ namespace unstl {
 
       Type* PtrAt(std::size_t index) noexcept {
         return reinterpret_cast<Type*>(
-          storage_ + (index + sizeof(Type))
+          storage_ + index * sizeof(Type)
         );
       }
 
       const Type* PtrAt(std::size_t index) const noexcept {
         return reinterpret_cast<const Type*>(
-          storage_ + (index + sizeof(Type))
+          storage_ + index * sizeof(Type)
         );
       }
 
@@ -58,7 +58,7 @@ namespace unstl {
 
       template <typename... Args>
       Type* TryEmplaceBack(Args&&... args) {
-        if (Full()) {
+        if (Full()) [[unlikely]] {
           return nullptr;
         }
 
@@ -97,8 +97,12 @@ namespace unstl {
       }
 
       void Clear(void) noexcept {
-        while (!Empty()) {
-          PopBackUnchecked();
+        if constexpr (std::is_trivially_destructible_v<Type>) {
+          size_ = 0;
+        } else {
+          while (!Empty()) {
+            PopBackUnchecked();
+          }
         }
       }
 
@@ -211,7 +215,7 @@ namespace unstl {
 
       [[nodiscard]]
       bool Full(void) const noexcept {
-        return size_ == Capacity;
+        return size_ >= Capacity;
       }
   };
 
