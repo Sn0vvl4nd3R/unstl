@@ -38,10 +38,14 @@ namespace unstl {
       Type* Construct(Args&&... args) {
         #ifndef NDEBUG
         UNSTL_EXPECT(!is_constructed_, "Double construct!");
-        is_constructed_ = true;
         #endif
 
         Type* ptr = ::new(Ptr()) Type(std::forward<Args>(args)...);
+
+        #ifndef NDEBUG
+        is_constructed_ = true;
+        #endif
+
         return ptr;
       }
 
