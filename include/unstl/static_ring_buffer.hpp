@@ -4,11 +4,17 @@
 #include "contracts.hpp"
 #include <cstddef>
 #include <utility>
+#include <type_traits>
 
 namespace unstl {
   
   template <typename Type, std::size_t Capacity>
   class StaticRingBuffer {
+    static_assert(
+      Capacity > 0,
+      "StaticRingBuffer capacity must be greater than zero"
+    );
+
     private:
       alignas(Type) std::byte storage_[sizeof(Type) * Capacity];
       std::size_t head_ = 0;
@@ -174,13 +180,13 @@ namespace unstl {
         return true;
       }
 
-      Type& Front(void) {
+      Type& Front(void) noexcept {
         UNSTL_EXPECT(!Empty(), "Contract violation: ring buffer is empty");
 
         return *PtrAt(0);
       }
 
-      const Type& Front(void) const {
+      const Type& Front(void) const noexcept {
         UNSTL_EXPECT(!Empty(), "Contract violation: ring buffer is empty");
 
         return *PtrAt(0);
@@ -202,13 +208,13 @@ namespace unstl {
         return PtrAt(0);
       }
 
-      Type& Back(void) {
+      Type& Back(void) noexcept {
         UNSTL_EXPECT(!Empty(), "Contract violation: ring buffer is empty");
 
         return *PtrAt(size_ - 1);
       }
 
-      const Type& Back(void) const {
+      const Type& Back(void) const noexcept {
         UNSTL_EXPECT(!Empty(), "Contract violation: ring buffer is empty");
 
         return *PtrAt(size_ - 1);
@@ -230,13 +236,13 @@ namespace unstl {
         return PtrAt(size_ - 1);
       }
 
-      Type& operator[](std::size_t index) {
+      Type& operator[](std::size_t index) noexcept {
         UNSTL_EXPECT(index < size_, "Contract violation: index out of range");
 
         return *PtrAt(index);
       }
 
-      const Type& operator[](std::size_t index) const {
+      const Type& operator[](std::size_t index) const noexcept {
         UNSTL_EXPECT(index < size_, "Contract violation: index out of range");
 
         return *PtrAt(index);
